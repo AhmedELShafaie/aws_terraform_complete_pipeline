@@ -13,9 +13,11 @@ jobs:
    runs-on: ubuntu-latest
    steps:
     - name: Add variable
+      id: add-variable
       run: echo "Var1=value1" >> $GITHUB_ENV 
 
     - name: Echo Variable 
+      id: variables
       run: |
         echo ${{ env.Var1 }}
         echo "GITHUB_HEAD_REF=$GITHUB_HEAD_REF"
@@ -24,6 +26,7 @@ jobs:
         echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
         echo "GITHUB_WORKFLOW=$GITHUB_WORKFLOW"
         echo "RUNNER_OS=$RUNNER_OS"
+        e
       
     - name: Check runner 
       if: ${{ runner.os }} == "linux"
@@ -49,6 +52,7 @@ jobs:
         echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
         echo "GITHUB_WORKFLOW=$GITHUB_WORKFLOW"
         echo "RUNNER_OS=$RUNNER_OS"
+        echo "${{ jobs.terraform.steps.add-variable.Var1 }}"
     # - name: Check runner 
     #   if: ${{ runner.os }} == "macos"
     #   run: echo "MacOS"
