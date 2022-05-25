@@ -26,7 +26,7 @@ jobs:
         echo "RUNNER_OS=$RUNNER_OS"
       
     - name: Check runner 
-      if: runner.os == "linux"
+      if: $runner.os == "linux"
       run: echo "Linux"
 
     - name: Check Branch 
@@ -50,7 +50,7 @@ jobs:
         echo "GITHUB_WORKFLOW=$GITHUB_WORKFLOW"
         echo "RUNNER_OS=$RUNNER_OS"
     - name: Check runner 
-      if: runner.os == "macos"
+      if: $runner.os == "macos"
       run: echo "MacOS"
     - name: Check Branch 
       if: $GITHUB_REF_NAME == "main"
