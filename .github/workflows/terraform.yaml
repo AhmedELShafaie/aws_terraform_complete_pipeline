@@ -16,5 +16,9 @@ jobs:
       run: echo "Var1=value1" >> $GITHUB_ENV 
 
     - name: Echo Variable 
-      run: echo ${{ env.Var1 }}
-      
+      run: |
+        echo ${{ env.Var1 }}
+        echo $GITHUB_HEAD_REF
+        echo $GITHUB_REF
+        echo $GITHUB_SHA
+        
