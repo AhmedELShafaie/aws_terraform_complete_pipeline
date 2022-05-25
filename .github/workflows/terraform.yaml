@@ -21,3 +21,37 @@ jobs:
         echo "GITHUB_HEAD_REF=$GITHUB_HEAD_REF"
         echo "GITHUB_REF=$GITHUB_REF"
         echo "GITHUB_SHA=$GITHUB_SHA"
+        echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
+        echo "GITHUB_WORKFLOW=$GITHUB_WORKFLOW"
+        echo "RUNNER_OS=$RUNNER_OS"
+      
+    - name: Check runner 
+      if: runner.os == "linux"
+      run: echo "Linux"
+
+    - name: Check Branch 
+      if: $GITHUB_REF_NAME == "main"
+      run: echo "Main Branch"
+
+  
+  macos:
+   name: macos
+   runs-on: macos-latest
+   steps:
+    - name: Add variable
+      run: echo "Var2=value2" >> $GITHUB_ENV 
+    - name: Echo Variable 
+      run: |
+        echo ${{ env.Var1 }}
+        echo "GITHUB_HEAD_REF=$GITHUB_HEAD_REF"
+        echo "GITHUB_REF=$GITHUB_REF"
+        echo "GITHUB_SHA=$GITHUB_SHA"
+        echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
+        echo "GITHUB_WORKFLOW=$GITHUB_WORKFLOW"
+        echo "RUNNER_OS=$RUNNER_OS"
+    - name: Check runner 
+      if: runner.os == "macos"
+      run: echo "MacOS"
+    - name: Check Branch 
+      if: $GITHUB_REF_NAME == "main"
+      run: echo "Main Branch"
