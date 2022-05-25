@@ -1,0 +1,20 @@
+name: Terraform AWS Build 
+
+on: 
+  push:
+    branches: 
+     - main 
+  
+  pull_request:
+    
+jobs:
+  terraform:
+   name: "terraform"
+   runs-on: ubuntu-latest
+   steps:
+    - name: Add variable
+      run: echo "Var1=value1" >> $GITHUB_ENV 
+
+    - name: Echo Variable 
+      run: echo ${{ env.Var1 }}
+      
