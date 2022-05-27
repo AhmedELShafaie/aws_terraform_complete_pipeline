@@ -29,20 +29,20 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt -check
+        run: terraform fmt -check terraform_scripts
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: terraform init terraform_scripts
       
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: terraform validate -no-color terraform_scripts
 
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: terraform plan -no-color -input=false
+        run: terraform plan -no-color -input=false terraform_scripts
         continue-on-error: true
 
       - uses: actions/github-script@v6
@@ -81,7 +81,7 @@ jobs:
       - name: Terraform Apply
         id: terraform_apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false
+        run: terraform apply -auto-approve -input=false terraform_scripts
 
 
       - name: Get Terraform Outputs
