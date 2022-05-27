@@ -1,61 +1,98 @@
-name: Terraform AWS Build 
+name: "Terraform Build"
 
-on: 
+on:
   push:
-    branches: 
-     - main 
-  
+    branches:
+      - main
   pull_request:
-    
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  
+
 jobs:
   terraform:
-   name: "terraform"
-   runs-on: ubuntu-latest
-   steps:
-    - name: Add variable
-      id: add-variable
-      run: echo "Var1=value1" >> $GITHUB_ENV 
+    name: "Terraform"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Echo Variable 
-      id: variables
-      run: |
-        echo ${{ env.Var1 }}
-        echo "GITHUB_HEAD_REF=$GITHUB_HEAD_REF"
-        echo "GITHUB_REF=$GITHUB_REF"
-        echo "GITHUB_SHA=$GITHUB_SHA"
-        echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
-        echo "GITHUB_WORKFLOW=$GITHUB_WORKFLOW"
-        echo "RUNNER_OS=$RUNNER_OS"
-        e
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.0
+        with:
+          # terraform_version: 0.13.0:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_wrapper: false 
+
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
       
-    - name: Check runner 
-      if: ${{ runner.os }} == "linux"
-      run: echo "Linux"
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
 
-    - name: Check Branch 
-      if: ${{ env.GITHUB_REF_NAME }} == "main"
-      run: echo ${{ env.GITHUB_REF_NAME }}
+      - name: Terraform Plan
+        id: plan
+        if: github.event_name == 'pull_request'
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
 
-  
-  macos:
-   name: macos
-   runs-on: macos-latest
-   steps:
-    - name: Add variable
-      run: echo "Var2=value2" >> $GITHUB_ENV 
-    - name: Echo Variable 
-      run: |
-        echo ${{ env.Var1 }}
-        echo "GITHUB_HEAD_REF=$GITHUB_HEAD_REF"
-        echo "GITHUB_REF=$GITHUB_REF"
-        echo "GITHUB_SHA=$GITHUB_SHA"
-        echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
-        echo "GITHUB_WORKFLOW=$GITHUB_WORKFLOW"
-        echo "RUNNER_OS=$RUNNER_OS"
-        echo "${{ jobs.terraform.steps.add-variable.Var1 }}"
-    # - name: Check runner 
-    #   if: ${{ runner.os }} == "macos"
-    #   run: echo "MacOS"
-    # - name: Check Branch 
-    #   if: $GITHUB_REF_NAME == "main"
-    #   run: echo "Main Branch"
+      - uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Terraform Apply
+        id: terraform_apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -input=false
+
+
+      - name: Get Terraform Outputs
+        id: terraform_variable 
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          Output=$(terraform output web-address)
+          echo "Output=$(terraform output web-address)" >> $GITHUB_ENV 
+
+      - name: Echo Output
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: echo "${{ env.Output }}"
+
+
