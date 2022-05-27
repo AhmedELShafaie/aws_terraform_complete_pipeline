@@ -38,11 +38,11 @@ provider "aws" {
 
 resource "random_pet" "sg" {}
 
-resource "aws_key_pair" "toptal-access-key" {
-  key_name = "toptal_access_key"
-  public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGl59hcXNOkns62o34FH1JkqRAUojia659PsOcj52Ofv debian@Ahmed-Laptop"
+# resource "aws_key_pair" "toptal-access-key" {
+#   key_name = "toptal_access_key"
+#   public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGl59hcXNOkns62o34FH1JkqRAUojia659PsOcj52Ofv debian@Ahmed-Laptop"
   
-}
+# }
 data "aws_ami" "ubuntu" {
   most_recent = true
 
