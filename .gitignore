@@ -147,3 +147,4 @@ terraform.rc
 
 *.pem
 /ssh_keys
+.terraform.lock.hcl
