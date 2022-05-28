@@ -1,0 +1,20 @@
+{
+  "extends": [
+    "config:js-app",
+    ":automergeAll",
+    ":disableRateLimiting",
+    ":rebaseStalePrs",
+    ":masterIssue"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "matchPackageNames": ["knex"],
+      "allowedVersions": "< 0.22.0"
+    }
+  ],
+  "prCreation": "not-pending",
+  "stabilityDays": 3
+}
