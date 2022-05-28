@@ -67,6 +67,7 @@ resource "aws_instance" "web" {
 
   user_data = <<-EOF
               #!/bin/bash
+              set -ex
               apt-get update
               sudo apt-get remove docker docker-engine docker.io containerd runc
 
