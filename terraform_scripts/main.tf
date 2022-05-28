@@ -66,20 +66,33 @@ resource "aws_instance" "web" {
   key_name               = aws_key_pair.toptal-access-key.key_name
 
   user_data = <<-EOF
-              #!/bin/bash
-              set -ex
-              apt-get update
-              sudo apt-get install -y ca-certificates curl lsb-release
-              sudo mkdir -p /etc/apt/keyrings
-              curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-              echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-              sudo apt-get update
-              sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
-              sudo systemctl enable docker && sudo systemctl start docker
-              sudo usermod -a -G docker ubuntu
-              sudo docker run hello-world
-              EOF
+              #cloud-config
+              
+              apt:
+                sources:
+                  docker.list:
+                    source: deb [arch=amd64] https://download.docker.com/linux/ubuntu $RELEASE stable
+                    keyid: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+
+              packages:
+                - docker-ce
+                - docker-ce-cli
+
+              # create the docker group
+              groups:
+                - docker
+
+              # Add default auto created user to docker group
+              system_info:
+                default_user:
+                  groups: [docker]
+
+              runcmd:
+                - /usr/bin/sleep 10
+                - /usr/bin/docker pull tutum/hello-world
+                - /usr/bin/docker run -d -p 80:80 --restart=always -e SOME_VAR="SOME VALUE" tutum/hello-world
+
+             EOF
 }
 
 resource "aws_security_group" "web-sg" {
