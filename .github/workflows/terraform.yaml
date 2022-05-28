@@ -89,10 +89,10 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           Output=$(terraform -chdir=terraform_scripts  output -raw server-address)
-          echo "Output=$(terraform -chdir=terraform_scripts  output -raw server-address)" >> $GITHUB_ENV 
-
+          #echo "Output=$(terraform -chdir=terraform_scripts  output -raw server-address)" >> $GITHUB_ENV 
+          echo "action_state=yellow" >> $GITHUB_ENV
       - name: Echo Output
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: echo "${{ env.Output }}"
+        run: echo "${{ env.action_state }}"
 
 
