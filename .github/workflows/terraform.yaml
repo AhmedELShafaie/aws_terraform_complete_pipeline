@@ -88,7 +88,7 @@ jobs:
         id: terraform_variable 
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          Output=$(terraform -chdir=terraform_scripts -raw output server-address)
+          Output=$(terraform -chdir=terraform_scripts  output -raw server-address)
           # echo "Output=$(terraform -chdir=terraform_scripts  output server-address)" >> $GITHUB_ENV 
 
       - name: Echo Output
