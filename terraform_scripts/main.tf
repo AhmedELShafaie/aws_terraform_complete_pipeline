@@ -77,6 +77,15 @@ resource "aws_instance" "web" {
               packages:
                 - docker-ce
                 - docker-ce-cli
+                - apt-transport-https
+                - ca-certificates
+                - curl
+                - gnupg-agent
+                - software-properties-common
+                - docker-compose-plugin
+                - jq
+                - curl 
+
 
               # create the docker group
               groups:
@@ -91,6 +100,7 @@ resource "aws_instance" "web" {
                 - /usr/bin/sleep 10
                 - /usr/bin/docker pull tutum/hello-world
                 - /usr/bin/docker run -d -p 80:80 --restart=always -e SOME_VAR="SOME VALUE" tutum/hello-world
+                - /usr/bin/docker compose version
 
              EOF
 }
@@ -110,6 +120,19 @@ resource "aws_security_group" "web-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   // connectivity to ubuntu mirrors is required to run `apt-get update` and `apt-get install apache2`
   egress {
     from_port   = 0
