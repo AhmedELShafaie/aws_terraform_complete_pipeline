@@ -104,6 +104,6 @@ output "web-address" {
 }
 
 output "server-address" {
-  value = "${aws_instance.web.public_dns}"
+  value = " ${aws_instance.web.public_ip} "
 }
 
