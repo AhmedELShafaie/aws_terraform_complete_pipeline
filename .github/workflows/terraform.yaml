@@ -107,4 +107,4 @@ jobs:
           node-version: '17'
       - run: |  
           cd realworld-backend 
-          echo "${{env.server_ip}}"
+          ssh ubuntu@${{ env.server_ip }} -t "sudo apt-get update && sudo apt-get upgrade -y"
