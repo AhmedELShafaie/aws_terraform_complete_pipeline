@@ -29,20 +29,20 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform -chdir=terraform_scripts fmt  -check 
+        run: terraform -chdir=terraform fmt  -check 
 
       - name: Terraform Init
         id: init
-        run: terraform -chdir=terraform_scripts init 
+        run: terraform -chdir=terraform init 
       
       - name: Terraform Validate
         id: validate
-        run: terraform -chdir=terraform_scripts validate  -no-color 
+        run: terraform -chdir=terraform validate  -no-color 
 
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: terraform -chdir=terraform_scripts plan  -no-color -input=false 
+        run: terraform -chdir=terraform plan  -no-color -input=false 
         continue-on-error: true
 
       - uses: actions/github-script@v6
@@ -81,15 +81,15 @@ jobs:
       - name: Terraform Apply
         id: terraform_apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform  -chdir=terraform_scripts apply  -auto-approve -input=false 
+        run: terraform  -chdir=terraform apply  -auto-approve -input=false 
 
 
       - name: Get Terraform Outputs
         id: terraform_variable 
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          server_ip=$(terraform -chdir=terraform_scripts  output -raw server-address)
-          echo "server_ip=$(terraform -chdir=terraform_scripts  output -raw server-address)" >> $GITHUB_ENV 
+          server_ip=$(terraform -chdir=terraform  output -raw server-address)
+          echo "server_ip=$(terraform -chdir=terraform  output -raw server-address)" >> $GITHUB_ENV 
           #echo "action_state=yellow" >> $GITHUB_ENV
       - name: Echo Output
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
