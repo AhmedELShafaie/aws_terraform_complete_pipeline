@@ -1,0 +1,23 @@
+name: Realworld CI
+on:
+  push:
+   branches:
+     - "main"
+
+  pull_request:
+
+
+# YAML data
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    if: ${GITHUB_EVENT_NAME} == "pull_request"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: |  
+          cd realworld-backend 
+          npm run docker:test
+  
