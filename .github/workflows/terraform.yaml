@@ -97,6 +97,7 @@ jobs:
           #echo "action_state=yellow" >> $GITHUB_ENV
           #echo "::set-env name=server_ip::$server_ip"
           echo "server_ip=$server_ip" >> $GITHUB_ENV
+          echo "::set-output name=server_ip::$server_ip"
 
      
       - name: Echo Output
