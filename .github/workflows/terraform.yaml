@@ -126,7 +126,7 @@ jobs:
             pwd
             ls -al 
             git clone https://github.com/AhmedELShafaie/aws_terraform_complete_pipeline.git aws_terraform_complete_pipeline
-            cd aws_terraform_complete_pipeline
+            cd aws_terraform_complete_pipeline/realworld-backend
             npm run docker:start 
 
     
