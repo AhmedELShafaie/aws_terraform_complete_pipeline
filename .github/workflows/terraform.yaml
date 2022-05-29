@@ -93,8 +93,8 @@ jobs:
           echo "$server_ip"
           #echo "server_ip=$(terraform -chdir=terraform  output -raw server-address)" >> $GITHUB_ENV 
           #echo "action_state=yellow" >> $GITHUB_ENV
-          echo "::set-env name=server_ip::$server_ip"
-   
+          #echo "::set-env name=server_ip::$server_ip"
+          echo "server_ip=$server_ip" >> $GITHUB_ENV
 
      
       - name: Echo Output
