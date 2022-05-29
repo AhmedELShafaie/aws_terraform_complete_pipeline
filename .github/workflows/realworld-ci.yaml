@@ -1,10 +1,10 @@
 name: Realworld CI
 on:
-  push:
-   branches:
-     - "main"
-
-  pull_request:
+  workflow_run:
+    workflows:
+      - "Terraform"
+    types:
+      - "completed"
 
 
 # YAML data
@@ -19,5 +19,5 @@ jobs:
           node-version: '14'
       - run: |  
           cd realworld-backend 
-          npm run docker:test
+          npm run docker:start
   
