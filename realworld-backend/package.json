@@ -14,7 +14,7 @@
     "db:truncate": "bin/truncate.js",
     "docker:db:truncate": "docker-compose exec node npm run db:truncate",
     "docker:test": "docker-compose -f docker-compose.yml -f docker-compose.test.yml run node npm run test",
-    "docker:start": "docker-compose -f docker-compose.yml -f docker-compose.development.yml up"
+    "docker:start": "docker compose -f docker-compose.yml -f docker-compose.development.yml up -d"
   },
   "dependencies": {
     "@hapi/boom": "9.1.4",
