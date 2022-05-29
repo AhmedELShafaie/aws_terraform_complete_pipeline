@@ -2,7 +2,7 @@ name: Realworld CI
 on:
   workflow_run:
     workflows:
-      - "Terraform"
+      - "Terraform Build"
     types:
       - "completed"
 
