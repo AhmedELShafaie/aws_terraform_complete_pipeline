@@ -121,7 +121,7 @@ jobs:
         with:
           host: ${{ needs.terraform.outputs.server_ip }}
           username: ubuntu
-          key: ${{ API_SERVER_SSH_KEY }}
+          key: ${{ secrets.API_SERVER_SSH_KEY }}
           script: |
             pwd
             ls -al 
