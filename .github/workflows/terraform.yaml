@@ -93,7 +93,7 @@ jobs:
           #echo "action_state=yellow" >> $GITHUB_ENV
       - name: Echo Output
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: echo "${{ env.server_id }}"
+        run: echo "${{env.server_id}}"
 
 
   ci: 
@@ -107,4 +107,4 @@ jobs:
           node-version: '17'
       - run: |  
           cd realworld-backend 
-          echo "${{ env.server_ip }}"
+          echo "${{env.server_ip}}"
