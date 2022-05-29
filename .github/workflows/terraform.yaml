@@ -93,10 +93,12 @@ jobs:
           echo "$server_ip"
           #echo "server_ip=$(terraform -chdir=terraform  output -raw server-address)" >> $GITHUB_ENV 
           echo "action_state=yellow" >> $GITHUB_ENV
+          echo "${{ env.action_state }}"
+
      
       - name: Echo Output
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: echo "${{env.server_ip}}"
+        run: echo "${{env.server_ip}}" 
 
 
   ci: 
@@ -104,11 +106,11 @@ jobs:
     needs: [terraform]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '17'
+      # - uses: actions/checkout@v3
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '17'
       - run: |  
           cd realworld-backend 
-          echo ${{ env.action_state }}
+          echo "${{ env.action_state }}"
 
