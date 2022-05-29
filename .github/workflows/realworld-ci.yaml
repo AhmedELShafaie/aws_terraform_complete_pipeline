@@ -11,7 +11,7 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
-    if: GITHUB_EVENT_NAME == "pull_request"
+    if: github.event_name == "pull_request"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
