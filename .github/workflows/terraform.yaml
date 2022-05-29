@@ -113,5 +113,5 @@ jobs:
       #     node-version: '17'
       - run: |  
           #cd realworld-backend 
-          echo "${{ env.action_state }}"
+          echo  "${{env.server_ip}}" 
 
