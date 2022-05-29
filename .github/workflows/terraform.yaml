@@ -90,7 +90,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           server_ip=$(terraform -chdir=terraform  output -raw server-address)
-          echo "server_ip"
+          echo "$server_ip"
           echo "server_ip=$(terraform -chdir=terraform  output -raw server-address)" >> $GITHUB_ENV 
           echo "action_state=yellow" >> $GITHUB_ENV
      
@@ -110,4 +110,4 @@ jobs:
           node-version: '17'
       - run: |  
           cd realworld-backend 
-          echo "${{ env.action_state }}"
+          echo env.server_ip
