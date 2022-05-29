@@ -111,6 +111,6 @@ jobs:
       #   with:
       #     node-version: '17'
       - run: |  
-          cd realworld-backend 
+          #cd realworld-backend 
           echo "${{ env.action_state }}"
 
