@@ -115,3 +115,5 @@ jobs:
       #   with:
       #     node-version: '17'
       - run: echo ${{ needs.terraform.outputs.server_ip }}
+      - run: ssh -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.server_ip }}
+    
