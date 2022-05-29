@@ -125,7 +125,7 @@ jobs:
           script: |
             pwd
             ls -al 
-            git clone https://github.com/AhmedELShafaie/aws_terraform_complete_pipeline aws_terraform_complete_pipeline
+            git clone https://github.com/AhmedELShafaie/aws_terraform_complete_pipeline.git aws_terraform_complete_pipeline
             cd aws_terraform_complete_pipeline
             npm run docker:start 
 
