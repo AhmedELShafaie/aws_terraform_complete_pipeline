@@ -18,5 +18,5 @@ jobs:
           node-version: '14'
       - run: |  
           cd realworld-backend 
-          npm run docker:start
+          echo "${{ env.server_ip }}"
   
