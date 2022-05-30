@@ -109,6 +109,9 @@ jobs:
     name: "ci"
     needs: [terraform]
     runs-on: ubuntu-latest
+    env: 
+      repolist: "https://github.com/AhmedELShafaie/aws_terraform_complete_pipeline.git"
+      loc: "aws_terraform_complete_pipeline"
     steps:
       # - uses: actions/checkout@v3
       # - uses: actions/setup-node@v3
@@ -125,7 +128,7 @@ jobs:
           script: |
             pwd
             ls -al 
-            git clone https://github.com/AhmedELShafaie/aws_terraform_complete_pipeline.git aws_terraform_complete_pipeline
+            git clone ${{ env.repolist }} ${{ env.aws_terraform_complete_pipeline }} 2> /dev/null || (cd ${{ env.aws_terraform_complete_pipeline }} ; git pull )
             cd aws_terraform_complete_pipeline/realworld-backend
             npm run docker:start 
 
