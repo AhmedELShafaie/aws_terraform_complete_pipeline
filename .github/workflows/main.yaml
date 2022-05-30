@@ -1,4 +1,4 @@
-name: "Terraform Build"
+name: "Provision AWS instance and Deploy Realworld backend"
 
 on:
   push:
@@ -14,7 +14,7 @@ env:
 
 jobs:
   terraform:
-    name: "Terraform"
+    name: "provision-aws-instance"
     runs-on: ubuntu-latest
     outputs:
       server_ip: ${{ steps.terraform_variable.outputs.server_ip }}
@@ -105,7 +105,7 @@ jobs:
         run: echo "${{env.server_ip}}" 
 
 
-  ci: 
+  Realworld-backend: 
     name: "ci"
     needs: [terraform]
     runs-on: ubuntu-latest
