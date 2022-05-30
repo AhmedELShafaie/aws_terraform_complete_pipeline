@@ -127,7 +127,7 @@ jobs:
           key: ${{ secrets.API_SERVER_SSH_KEY }}
           script: |
             echo "** check if repo is cloned or not **"
-            git clone ${{ env.repolist }} ${{ env.loc }} 2> /dev/null || (cd ${{ env.loc/realworld-backend }} ; git pull )
+            git clone ${{ env.repolist }} ${{ env.loc }} 2> /dev/null || (cd ${{ env.loc }}/realworld-backend ; git pull )
             npm run docker:start 
 
     
