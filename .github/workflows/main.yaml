@@ -126,9 +126,8 @@ jobs:
           username: ubuntu
           key: ${{ secrets.API_SERVER_SSH_KEY }}
           script: |
-            pwd
-            ls -al 
-            git clone ${{ env.repolist }} ${{ env.aws_terraform_complete_pipeline }} 2> /dev/null || (cd ${{ env.aws_terraform_complete_pipeline/realworld-backend }} ; git pull )
+            echo "** check if repo is cloned or not **"
+            git clone ${{ env.repolist }} ${{ env.loc }} 2> /dev/null || (cd ${{ env.loc/realworld-backend }} ; git pull )
             npm run docker:start 
 
     
