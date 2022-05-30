@@ -1,11 +1,16 @@
 name: Realworld CI
+# on:
+#   workflow_run:
+#     workflows:
+#       - "Terraform Build"
+#     types:
+#       - "completed"
 on:
-  workflow_run:
-    workflows:
-      - "Terraform Build"
-    types:
-      - "completed"
-
+  push:
+    branches:
+      - "main"
+  pull_request:
+    
 
 # YAML data
 jobs:
@@ -16,7 +21,19 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '17'
-      - run: |  
-          cd realworld-backend 
-          echo "${{ env.server_ip }}"
+      # - run: |  
+      #     cd realworld-backend 
+      #     echo "${{ env.server_ip }}"
   
+      - name: tfsec
+        uses: aquasecurity/tfsec-sarif-action@v0.1.0
+        with:
+          sarif_file: tfsec.sarif  
+          working_directory: realworld-backend
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: tfsec.sarif
