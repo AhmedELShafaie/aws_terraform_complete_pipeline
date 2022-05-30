@@ -16,7 +16,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '17'
-      - run: |  
-          cd realworld-backend 
-          echo "${{ env.server_ip }}"
+      # - run: |  
+      #     cd realworld-backend 
+      #     echo "${{ env.server_ip }}"
   
+      - name: tfsec
+        uses: aquasecurity/tfsec-sarif-action@v0.1.0
+        with:
+          sarif_file: tfsec.sarif  
+          working_directory: realworld-backend
+          
