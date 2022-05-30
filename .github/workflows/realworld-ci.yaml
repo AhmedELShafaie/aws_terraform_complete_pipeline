@@ -30,6 +30,7 @@ jobs:
         with:
           sarif_file: tfsec.sarif  
           working_directory: realworld-backend
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
