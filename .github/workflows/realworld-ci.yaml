@@ -1,12 +1,17 @@
 name: Realworld CI
+# on:
+#   workflow_run:
+#     workflows:
+#       - "Terraform Build"
+#     types:
+#       - "completed"
 on:
-  workflow_run:
-    workflows:
-      - "Terraform Build"
-    types:
-      - "completed"
-
-
+  push:
+    branches:
+      - "main"
+  pull_request:
+    
+    
 # YAML data
 jobs:
   ci:
@@ -25,4 +30,3 @@ jobs:
         with:
           sarif_file: tfsec.sarif  
           working_directory: realworld-backend
-          
